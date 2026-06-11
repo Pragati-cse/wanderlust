@@ -108,6 +108,10 @@ app.get("/demouser", (req, res) => {
   res.send(req.user);
 });
 
+app.get("/", (req, res) => {
+  res.redirect("/listings");
+});
+
 // 404
 app.all(/.*/, (req, res, next) => {
   next(new ExpressError(404, "page not found"));
@@ -125,6 +129,8 @@ app.use((err, req, res, next) => {
 
 
 // server
-app.listen(8080, () => {
-  console.log("server is listening on port 8080");
+const PORT = process.env.PORT || 8080;
+
+app.listen(PORT, () => {
+  console.log(`server is listening on port ${PORT}`);
 });
