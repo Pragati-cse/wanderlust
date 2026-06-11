@@ -1,0 +1,138 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="row">
+
+  <div class="col-8 offset-3 show-card">
+    <h3><%= listing.title %></h3>
+  </div>
+
+  <div class="card col-6 offset-3 show-card listing-card">
+
+    <img src="<%= listing.image.url %>" class="card-img-top show-img">
+
+    <div class="card-body">
+
+      <p class="card-text">
+        <%= listing.description %><br>
+        ₹ <%= listing.price ? listing.price.toLocaleString("en-IN") : 0 %><br>
+        <%= listing.location %><br>
+        <%= listing.country %>
+      </p>
+
+      <div style="margin-bottom:10px;">
+
+        <% let rating = listing.avgRating; %>
+
+        <% if(!rating || listing.reviewCount === 0) { %>
+          <span style="color:#717171;">⭐ New · No reviews yet</span>
+        <% } else { %>
+
+          <% let fullStars = Math.floor(rating); %>
+
+          <% for(let i=1;i<=5;i++){ %>
+            <span style="color:<%= i <= fullStars ? '#ff385c' : '#ddd' %>">★</span>
+          <% } %>
+
+          <span style="margin-left:6px; font-weight:500;">
+            <%= rating.toFixed(1) %>
+          </span>
+
+          <span style="color:#717171;">
+            · <%= listing.reviewCount %> reviews
+          </span>
+
+        <% } %>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div class="btns">
+    <a href="/listings/<%= listing._id %>/edit"
+       class="btn btn-dark col-1 offset-3">
+      Edit
+    </a>
+
+    <form method="POST"
+          action="/listings/<%= listing._id %>?_method=DELETE">
+      <button class="btn btn-dark offset-5">Delete</button>
+    </form>
+  </div>
+
+  <div class="col-8 offset-3 mb-3">
+
+    <hr>
+    <h4>Leave a Review</h4>
+            
+  <form action="/listings/<%= listing._id %>/reviews" method="POST" onsubmit="return validateRating()">
+
+                    <form action="/listings/<%= listing._id %>/reviews" method="POST">
+                                
+                                   
+                       <div class="star-rating">
+  <input type="radio" id="star5" name="review[rating]" value="5" />
+  <label for="star5">★</label>
+
+  <input type="radio" id="star4" name="review[rating]" value="4" />
+  <label for="star4">★</label>
+
+  <input type="radio" id="star3" name="review[rating]" value="3" />
+  <label for="star3">★</label>
+
+  <input type="radio" id="star2" name="review[rating]" value="2" />
+  <label for="star2">★</label>
+
+  <input type="radio" id="star1" name="review[rating]" value="1" />
+  <label for="star1">★</label>
+</div>
+<% if(listing.reviews.length === 0) { %>
+  <span style="color:#717171;">New · No reviews</span>
+<% } else { %>
+
+  <% let avg = listing.avgRating; %>
+  <% let full = Math.round(avg); %>
+
+  <% for(let i=1;i<=5;i++){ %>
+    <span style="color:<%= i <= full ? '#ff385c' : '#ddd' %>">★</span>
+  <% } %>
+
+  <span style="margin-left:6px;">
+    <%= avg.toFixed(1) %>
+  </span>
+
+<% } %>
+
+  
+
+
+      <br>
+
+      <textarea name="review[comment]"
+                required
+                style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px;">
+      </textarea>
+
+      <br><br>
+
+      <button style="background:#ff385c; color:white; border:none; padding:8px 14px; border-radius:8px;">
+        Submit
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<script>
+function validateRating() {
+  const rating = document.querySelector('input[name="review[rating]"]:checked');
+  if (!rating) {
+    alert("Please select a rating");
+    return false;
+  }
+  return true;
+}
+</script>

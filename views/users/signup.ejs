@@ -1,0 +1,53 @@
+
+
+
+
+
+
+
+<% layout("/layouts/boilerplate") %>
+
+<div class="container mt-4">
+
+  <% if (error && error.length) { %>
+    <div class="alert alert-danger">
+      <%= error %>
+    </div>
+  <% } %>
+
+  <% if (success && success.length) { %>
+    <div class="alert alert-success">
+      <%= success %>
+    </div>
+  <% } %>
+
+  <h2>Sign Up</h2>
+
+  <form action="/signup" method="POST">
+
+    <input
+      type="email"
+      name="email"
+      placeholder="email"
+      required
+    >
+
+    <input
+      type="text"
+      name="username"
+      placeholder="username"
+      required
+    >
+
+    <input
+      type="password"
+      name="password"
+      placeholder="password"
+      required
+    >
+
+    <button type="submit">Sign Up</button>
+
+  </form>
+
+</div>
